@@ -19,9 +19,7 @@ const userAuth = async (req, res) => {
       });
       // save user token
       user.token = token;
-      res
-        .status(200)
-        .json({ user_email: user.email, user_token: user.token });
+      res.status(200).json({ user_email: user.email, user_token: user.token });
     } else {
       res.status(400).send('Invalid Credentials');
     }

@@ -1,14 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const userRoutes = require('./routes/usersRoutes');
-const likeRoutes = require('./routes/likeRoutes');
+const contentRoutes = require('./routes/contentRoutes');
 const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
 
 mongoose
-  .connect("mongodb://localhost/UserInteraction")
+  .connect("mongodb://localhost/contentService")
   .then(() => console.log("connected to MongoDB"))
   .catch((err) => console.error("could not connect to MongoDB...", err));
 
@@ -21,8 +20,7 @@ var allowCrossDomain = function (req, res, next) {
 
 app.use(express.json());
 app.use(allowCrossDomain);
-app.use('/users', userRoutes);
-app.use('/likes', likeRoutes);
+app.use('/content', contentRoutes)
 
-const PORT = process.env.USER_INTERACTION_PORT || 3000;
-app.listen(PORT, () => console.log(`User Interaction Service is listening on port ${PORT}.`));
+const PORT = process.env.CONTENT_SERVICE_PORT || 3001;
+app.listen(PORT, () => console.log(`Content Service is listening on port ${PORT}.`));
