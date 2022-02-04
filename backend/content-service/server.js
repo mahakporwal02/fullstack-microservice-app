@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const contentRoutes = require('./routes/contentRoutes');
+const fileupload = require("express-fileupload");
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -20,6 +21,7 @@ var allowCrossDomain = function (req, res, next) {
 
 app.use(express.json());
 app.use(allowCrossDomain);
+app.use(fileupload());
 app.use('/content', contentRoutes)
 
 const PORT = process.env.CONTENT_SERVICE_PORT || 3001;

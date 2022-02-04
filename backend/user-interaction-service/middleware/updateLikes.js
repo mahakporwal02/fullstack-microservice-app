@@ -1,5 +1,4 @@
 const { request } = require('express');
-const likes = require('../models/likes');
 const Likes = require('../models/likes');
 
 const updateLikes = async (req, res) => {
