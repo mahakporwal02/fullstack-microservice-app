@@ -24,7 +24,7 @@ const userAuth = async (req, res) => {
       res.status(400).send('Invalid Credentials');
     }
   } catch (err) {
-    console.log(err);
+    res.status(500).send('Internal Server Error');
   }
 };
 

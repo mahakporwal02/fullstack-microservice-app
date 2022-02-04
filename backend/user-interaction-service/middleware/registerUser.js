@@ -2,6 +2,7 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
+const { response } = require('express');
 
 const registerUser = async (req, res) => {
   try {
@@ -35,7 +36,7 @@ const registerUser = async (req, res) => {
     await user.save();
     res.status(201).json({user_email: user.email, user_token: user.token});
   } catch (err) {
-    console.log(err);
+    res.status(500).send('Internal Server Error');
   }
 };
 

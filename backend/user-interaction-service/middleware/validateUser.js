@@ -8,7 +8,6 @@ const validateUser = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
     req.user_id = decoded.user_id;
     const user = await User.findOne({ _id: req.user_id });
-    console.log(user);
     if (!user) {
       return res.status(401).send('Access denied. Invalid token.');
     }

@@ -6,7 +6,6 @@ const updateLikes = async (req, res) => {
     const { title } = req.body;
     const { user_id } = req;
     const liked_content = await Likes.findOne({ title });
-    console.log(liked_content);
     if (!liked_content) {
       const likes = new Likes({
         title: title.toLowerCase(),
@@ -26,8 +25,7 @@ const updateLikes = async (req, res) => {
     liked_content.save();
     res.status(200).json({ title, 'likes': liked_content.likes.length });
   } catch (err) {
-    console.log(err)
-    res.status(400).send('Content not found');
+    res.status(404).send('Content not found');
   }
 };
 
