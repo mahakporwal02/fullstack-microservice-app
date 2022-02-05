@@ -13,7 +13,7 @@ const validateUser = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    res.status(400).send('Invalid token.');
+    res.status(401).send('Invalid token.');
   }
 };
 

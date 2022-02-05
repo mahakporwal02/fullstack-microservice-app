@@ -1,31 +1,25 @@
-const { request } = require('express');
-const Likes = require('../models/likes');
+const Content = require('../models/content');
 
 const updateLikes = async (req, res) => {
   try {
     const { title } = req.body;
     const { user_id } = req;
-    const liked_content = await Likes.findOne({ title });
-    if (!liked_content) {
-      const likes = new Likes({
-        title: title.toLowerCase(),
-        likes: [user_id],
-      });
-      await likes.save();
-      return res.status(200).json({ title, 'likes': likes.likes.length });
+    const content = await Content.findOne({ title });
+    if (!content) {
+      res.status(404).send('Invalide Ttile');
     }
-    const likes = liked_content.likes;
+    const likes = content.likes;
     if (likes.includes(user_id)) {
-      liked_content.likes = likes.filter(function (item) {
+      content.likes = likes.filter(function (item) {
         return item !== user_id;
       });
     } else {
-      liked_content.likes.push(user_id);
+      content.likes.push(user_id);
     }
-    liked_content.save();
-    res.status(200).json({ title, 'likes': liked_content.likes.length });
+    await content.save();
+    res.status(200).json({ title, 'likes': content.likes.length, 'is_liked': content.likes.includes(user_id)});
   } catch (err) {
-    res.status(404).send('Content not found');
+    res.status(500).send('Internal Server Error');
   }
 };
 

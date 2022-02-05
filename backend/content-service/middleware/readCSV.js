@@ -7,6 +7,7 @@ const readCSV = async (req, res, next) => {
     req.csvData = csvData.slice(1);
     next();
   } catch (err) {
+    console.log(err);
     res.status(500).send('Internal Server Error');
   }
 };
