@@ -1,0 +1,315 @@
+{
+	"info": {
+		"_postman_id": "24c577e9-812a-4a41-92c2-c9695ab942be",
+		"name": "Microservice App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Interaction - User Register Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"abc@gmail.com\",\n    \"password\": \"Abc1@12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Interaction - User Login Request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const postRequest = {",
+							"  url: 'http://localhost:3000/users/register',",
+							"  method: 'POST',",
+							"  header: {",
+							"    'Content-Type': 'application/json'",
+							"  },",
+							"  body: {",
+							"    mode: 'raw',",
+							"    raw: JSON.stringify({ email: \"abc@gmail.com\", password: \"Abc1@12345\" })",
+							"  }",
+							"};",
+							"pm.sendRequest(postRequest);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"abc@gmail.com\",\n    \"password\": \"Abc1@12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contents Service - Ingest Content",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const SignUpRequest = {",
+							"    url: 'http://localhost:3000/users/register',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ email: \"abc@gmail.com\", password: \"Abc1@12345\" })",
+							"    }",
+							"};",
+							"",
+							"const loginRequest = {",
+							"    url: 'http://localhost:3000/users/login',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ email: \"abc@gmail.com\", password: \"Abc1@12345\" })",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(SignUpRequest);",
+							"pm.sendRequest(loginRequest, (error, response) => {",
+							"    if (!error) {",
+							"        response = response.json();",
+							"        pm.request.headers.add({",
+							"            key: \"x-auth-token\",",
+							"            value: response.user_token",
+							"        });",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/mahak/Desktop/fullstack-microservice/csv/content.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3001/content/ingest",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"content",
+						"ingest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Content Service - Get Content",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const SignUpRequest = {",
+							"    url: 'http://localhost:3000/users/register',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ email: \"abc@gmail.com\", password: \"Abc1@12345\" })",
+							"    }",
+							"};",
+							"",
+							"const loginRequest = {",
+							"    url: 'http://localhost:3000/users/login',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ email: \"abc@gmail.com\", password: \"Abc1@12345\" })",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(SignUpRequest);",
+							"pm.sendRequest(loginRequest, (error, response) => {",
+							"    if (!error) {",
+							"        response = response.json();",
+							"        pm.request.headers.add({",
+							"            key: \"x-auth-token\",",
+							"            value: response.user_token",
+							"        });",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/content/getContent",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"content",
+						"getContent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Interaction Service - Update Like",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const SignUpRequest = {",
+							"    url: 'http://localhost:3000/users/register',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ email: \"abc@gmail.com\", password: \"Abc1@12345\" })",
+							"    }",
+							"};",
+							"",
+							"const loginRequest = {",
+							"    url: 'http://localhost:3000/users/login',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ email: \"abc@gmail.com\", password: \"Abc1@12345\" })",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(SignUpRequest);",
+							"pm.sendRequest(loginRequest, (error, response) => {",
+							"    if (!error) {",
+							"        response = response.json();",
+							"        pm.request.headers.add({",
+							"            key: \"x-auth-token\",",
+							"            value: response.user_token",
+							"        });",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"title1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/likes/update",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"likes",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
