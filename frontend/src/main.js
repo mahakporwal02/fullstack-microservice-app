@@ -5,11 +5,11 @@ import router from './router'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import './assets/css/main.css'
-
+import VueToastify from "vue-toastify";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 Vue.use(BootstrapVue, IconsPlugin);
-
+Vue.use(VueToastify);
 Vue.config.productionTip = false
 
 new Vue({

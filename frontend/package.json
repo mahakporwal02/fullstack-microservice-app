@@ -13,7 +13,9 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
-    "vue-router": "^3.5.3"
+    "vue-password-validator": "^0.1.8",
+    "vue-router": "^3.5.3",
+    "vue-toastify": "^1.8.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
