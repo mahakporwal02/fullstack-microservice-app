@@ -59,10 +59,10 @@ npm install
 ## Postman Collection
 
 Postman collection could be imported from `postman` directory.
-It contaains information for the following endpoints
+It contains information for the following endpoints
 1. Register 
 2. Login - I have added a pre-request script that will register automatically so that login credentials aren't invalid.
-3. Ingest Content - I have added a pre-request script that will register and login automatically and then add authentication token to the headers as a key-value pair - `x-auth-token : <token>`. Also a dummy .CSV file has been provided in `CSV` directory for testing purpose which should be placed in body with name as `file` under form-data.
+3. Ingest Content - I have added a pre-request script that will register and login automatically and then add authentication token to the headers as a key-value pair - `x-auth-token : <token>`. Also a dummy `.CSV` file has been provided in `CSV` directory for testing purpose which should be placed in body with name as `file` under form-data.
 4. Get Content - I have added a pre-request script that will register and login automatically and then add authentication token to the headers as a key-value pair - `x-auth-token : <token>`.(You may need to ingest the dummy csv file first to test this endpoint else it will return an empty array).
 5. Update Like - I have added a pre-request script that will register and login automatically and then add authentication token to the headers as a key-value pair - `x-auth-token : <token>`.
 
@@ -73,7 +73,7 @@ It contaains information for the following endpoints
 
 ## LLD 
 ### Database Schema
-There are two databses one for each microservice(currently running in same mongodb docker instance)
+There are two databases one for each microservice(currently running in same mongodb docker instance)
 1. User-Interaction-Service database   
 This consists of two data collections 
 * Users 
@@ -97,20 +97,22 @@ This consists of two data collections
 This consists of one data collection
 * Contents 
 ```
-   title: { type: String, unique: true },
+  title: { type: String, unique: true },
   story : { type: String },
   date_published: { type: Date },
   user_id: { type: String }
 ```
 ### Endpoints
 #### User-Interaction-Service
-1. user-interaction-service:3000/users/register - Validates the format of email/password. Checks if the email is already present in database. Encrypts password and adds email and password to database. Generates JWT on the basis of uniquely returned user_id. Returns JWT and email.
-2. user-interaction-service:3000/users/login - Validates the format of email/password. Checks if the email is present in database. Decrypts the password compares from password of input. Generates JWT on the basis of uniquely returned user_id. Returns JWT and email.
-3. user-interaction-service:3000/users/validate - Validates the user by checking the JWT token in headers.
-4. user-interaction-service:3000/likes/read - Returns an object consisting of key as title of content and value as array of users who liked the content.(This endpoint is required by getContent for information of `likes`)
-5. user-interaction-service:3000/likes/update - This will validate the JWT token presnt in headers. The endpoint will then validate the title by sending request to `content-servive:3001/content/validateTitle`. If the user_id is present in the array of `likes` it will remove the user_id from the array. If user_id is not present it will add the user_id to the array of `likes`.
+1. `user-interaction-service:3000/users/register` - Validates the format of email/password. Checks if the email is already present in database. Encrypts password and adds email and password to database. Generates JWT on the basis of uniquely returned user_id. Returns JWT and email.
+2. `user-interaction-service:3000/users/login` - Validates the format of email/password. Checks if the email is present in database. Decrypts the password compares from password of input. Generates JWT on the basis of uniquely returned user_id. Returns JWT and email.
+3. `user-interaction-service:3000/users/validate` - Validates the user by checking the JWT token in headers.
+4. `user-interaction-service:3000/likes/read` - Returns an object consisting of key as title of content and value as array of users who liked the content.(This endpoint is required by getContent for information of `likes`)
+5. `user-interaction-service:3000/likes/update` - This will validate the JWT token present in headers. The endpoint will then validate the title by sending request to `content-servive:3001/content/validateTitle`. If the user_id is present in the array of `likes` it will remove the user_id from the array. If user_id is not present it will add the user_id to the array of `likes`.
 #### Content-Service
-1. content-service:3001/content/validateTitle - Validates the title from `Content` collection.
-2. content-service:3001/content/ingest - Validate the user by sending request to `user-interaction-service:3000/users/validate` endpoint. Read CSV file and populate it in the `Content` collection.
-3. content-service:3001/content/getContent - Validate the user by sending request to `user-interaction-service:3000/users/validate` endpoint. Get the `likes` data by sending request to user-interaction-service:3000/likes/read endoint. Add `likes` info to contents and return contents.
+1. `content-service:3001/content/validateTitle` - Validates the title from `Content` collection.
+2. `content-service:3001/content/ingest` - Validate the user by sending request to `user-interaction-service:3000/users/validate` endpoint. Read CSV file and populate it in the `Content` collection.
+3. `content-service:3001/content/getContent` - Validate the user by sending request to `user-interaction-service:3000/users/validate` endpoint. Get the `likes` data by sending request to user-interaction-service:3000/likes/read endoint. Add `likes` info to contents and return contents.
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+## Thank You!

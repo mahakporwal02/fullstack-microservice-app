@@ -175,6 +175,8 @@ export default {
           if (this.$route.path !== '/content') {
             this.$router.push('/content');
           }
+        }).catch((err)=>{
+          this.$vToastify.error(err, "Email Id already exist"); 
         });
     },
     showPassword() {

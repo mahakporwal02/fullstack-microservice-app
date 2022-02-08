@@ -33,7 +33,6 @@ const updateLikes = async (req, res) => {
       is_liked: likesData.likes.includes(user_id),
     });
   } catch (err) {
-    console.log(err)
 
     res.status(500).send("Internal Server Error");
   }

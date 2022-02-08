@@ -56,7 +56,6 @@ export default {
     return {
       token: localStorage.getItem('token'),
       contents: [],
-      text: 'aaaaaaaaaaaaaaaaaaaaaaaaaa',
     };
   },
   methods: {
