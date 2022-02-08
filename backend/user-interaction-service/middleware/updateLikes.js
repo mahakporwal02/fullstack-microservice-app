@@ -1,25 +1,41 @@
-const Content = require('../models/content');
+const Likes = require("../models/like");
 
 const updateLikes = async (req, res) => {
   try {
-    const { title } = req.body;
+    let { title } = req.body;
+    title = title.trim()
     const { user_id } = req;
-    const content = await Content.findOne({ title });
-    if (!content) {
-      res.status(404).send('Invalide Ttile');
+    let likesData = await Likes.findOne({ title });
+    if (!likesData) {
+      likesData = new Likes({
+        title,
+        likes: [user_id],
+      });
+      likesData.save();
+      return res.status(200).json({
+        title,
+        likes: likesData.likes.length,
+        is_liked: likesData.likes.includes(user_id),
+      });
     }
-    const likes = content.likes;
+    const likes = likesData.likes;
     if (likes.includes(user_id)) {
-      content.likes = likes.filter(function (item) {
+      likesData.likes = likes.filter(function (item) {
         return item !== user_id;
       });
     } else {
-      content.likes.push(user_id);
+      likesData.likes.push(user_id);
     }
-    await content.save();
-    res.status(200).json({ title, 'likes': content.likes.length, 'is_liked': content.likes.includes(user_id)});
+    await likesData.save();
+    return res.status(200).json({
+      title,
+      likes: likesData.likes.length,
+      is_liked: likesData.likes.includes(user_id),
+    });
   } catch (err) {
-    res.status(500).send('Internal Server Error');
+    console.log(err)
+
+    res.status(500).send("Internal Server Error");
   }
 };
 

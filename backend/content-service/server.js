@@ -6,16 +6,17 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+const mongodb_url = process.env.MONGO_URL || `mongodb://mongo:27017`;
 
 mongoose
-  .connect("mongodb://mongo:27017/microserviceApp")
+  .connect(`${mongodb_url}/contentService`)
   .then(() => console.log("connected to MongoDB"))
   .catch((err) => console.error("could not connect to MongoDB...", err));
 
 var allowCrossDomain = function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-    res.header("Access-Control-Allow-Headers", "Content-Type, x-auth-token");
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 };
 

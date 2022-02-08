@@ -4,22 +4,20 @@ const ingestContent = async (req, res, next) => {
   try {
     const dateTime = new Date();
     const user_id = req.user_id;
-    for (const element of req.csvData) {
-      let content = await Content.findOne({ 'title': element[0] });
+    for (let element of req.csvData) {
+      let content = await Content.findOne({ 'title': element[0].trim() });
       if (!content) {
         content = new Content({
-          'title': element[0],
+          'title': element[0].trim(),
           'date_published': dateTime,
           'user_id': user_id,
-          'story': element[1],
-          'likes': []
+          'story': element[1]
         });
-        content.save();
+        await content.save();
       }
     }
     next();
   } catch (err) {
-    console.log(err);
     res.status(500).send('Internal Server Error');
   }
 };

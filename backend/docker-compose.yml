@@ -1,4 +1,4 @@
-version: "3.1"
+version: "2"
 services:
   mongo:
     image: mongo
@@ -10,15 +10,10 @@ services:
     build: ./user-interaction-service
     ports:
       - "3000:3000"
-    depends_on:
-      - mongo
   content-service:
     build: ./content-service
     ports:
       - "3001:3001"
-    depends_on:
-      - user-interaction-service
-      - mongo
 
 volumes:
     data-db:

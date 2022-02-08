@@ -2,10 +2,10 @@ const axios = require('axios');
 
 const validateUser = async (req, res, next) => {
   try {
-    USER_INTERACTION_PORT = process.env.USER_INTERACTION_PORT;
     const token = req.header('x-auth-token');
+    if (!token) return res.status(401).send('Access denied. No token provided.');
     const response = await axios.get(
-      `http://user-interaction-service:${USER_INTERACTION_PORT}/users/validate`,
+      `${process.env.USER_INTERACTION_URL || `http://user-interaction-service:3000`}/users/validate`,
       {
         headers: {
           'x-auth-token': token,
@@ -15,9 +15,7 @@ const validateUser = async (req, res, next) => {
     req.user_id = response.data.user_id;
     next();
   } catch (err) {
-    console.log('in interaction');
-    console.log(err);
-    return res.status(err.status || 400).send(err.message || 'something went wrong');
+    return res.status(err.status || 500).send(err.message || 'Internal Server Error');
   }
 };
 
